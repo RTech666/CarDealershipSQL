@@ -1,41 +1,30 @@
-/* 
-Dealership.java
-
-This Java file contains the contructor for the dealership and has the methods used for majority of the program.
-*/
-
 package com.pluralsight.dealership;
 import java.util.ArrayList;
 import java.util.List;
 
-class Dealership {
-    // Create the variables.
+public class Dealership {
+    // Create the variables, as private.
+    private int dealershipID;
     private String name;
     private String address;
     private String phone;
-    private ArrayList<Vehicle> inventory;
-    private List<Vehicle> vehiclesInRange;
-    private List<Vehicle> vehiclesByMakeModel;
-    private List<Vehicle> vehiclesByYear;
-    private List<Vehicle> vehiclesByColor;
-    private List<Vehicle> vehiclesByMileage;
-    private List<Vehicle> vehiclesByType;
+    private List<Vehicle> inventory;
+
+    // Initalize data manager.
+    private VehicleDataManager vehicleDataManager = new VehicleDataManager();
 
     // Create the constructor.
-    public Dealership(String name, String address, String phone) {
+    public Dealership(int dealershipID, String name, String address, String phone) {
+        this.dealershipID = dealershipID;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.inventory = new ArrayList<>();
     }
 
-    // Create setters and getters.
-    public void addVehicle(Vehicle vehicle) {
-        inventory.add(vehicle);
-    }
-
-    public List<Vehicle> getAllVehicles() {
-        return inventory;
+    // Create the getters and setters.
+    public int getdealershipID() {
+        return dealershipID;
     }
 
     public String getName() {
@@ -50,86 +39,65 @@ class Dealership {
         return phone;
     }
 
-    public List<Vehicle> getVehiclesByPrice(double min, double max) {
-        // Initalize the variable.
-        vehiclesInRange = new ArrayList<>();
-        
-        for (Vehicle vehicle : inventory) {
-            if (vehicle.getPrice() >= min && vehicle.getPrice() <= max) {
-                vehiclesInRange.add(vehicle);
-            }
-        }
-
-        return vehiclesInRange;
+    public List<Vehicle> getInventory() {
+        return inventory;
     }
 
-    public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
-        // Initalize the variable.
-        vehiclesByMakeModel = new ArrayList<>();
-
-        for (Vehicle vehicle : inventory) {
-            if (vehicle.getMake().equalsIgnoreCase(make) && vehicle.getModel().equalsIgnoreCase(model)) {
-                vehiclesByMakeModel.add(vehicle);
-            }
-        }
-
-        return vehiclesByMakeModel;
+    public List<Vehicle> getVehiclesByPriceFromDatabase(double min, double max) {
+        return vehicleDataManager.getVehiclesByPriceRange(min, max);
     }
 
-    public List<Vehicle> getVehiclesByYear(int min, int max) {
-        // Initalize the variable.
-        vehiclesByYear = new ArrayList<>();
-
-        for (Vehicle vehicle : inventory) {
-            if (vehicle.getYear() >= min && vehicle.getYear() <= max) {
-                vehiclesByYear.add(vehicle);
-            }
-        }
-
-        return vehiclesByYear;
+    public List<Vehicle> getVehiclesByMakeModelFromDatabase(String make, String model) {
+        return vehicleDataManager.getVehiclesByMakeModel(make, model);
     }
 
-    public List<Vehicle> getVehiclesByColor(String color) {
-        // Initalize the variable.
-        vehiclesByColor = new ArrayList<>();
-
-        for (Vehicle vehicle : inventory) {
-            if (vehicle.getColor().equalsIgnoreCase(color)) {
-                vehiclesByColor.add(vehicle);
-            }
-        }
-
-        return vehiclesByColor;
+    public List<Vehicle> getVehiclesByYearRangeFromDatabase(int minYear, int maxYear) {
+        return vehicleDataManager.getVehiclesByYearRange(minYear, maxYear);
     }
 
-    public List<Vehicle> getVehiclesByMilage(int min, int max) {
-        // Initalize the variable.
-        vehiclesByMileage = new ArrayList<>();
-
-        for (Vehicle vehicle : inventory) {
-            if (vehicle.getOdometer() >= min && vehicle.getOdometer() <= max) {
-                vehiclesByMileage.add(vehicle);
-            }
-        }
-
-        return vehiclesByMileage;
+    public List<Vehicle> getVehiclesByColorFromDatabase(String color) {
+        return vehicleDataManager.getVehiclesByColor(color);
     }
 
-    public List<Vehicle> getVehiclesByType(String vehicleType) {
-        // Initalize the variable.
-        vehiclesByType = new ArrayList<>();
-
-        for (Vehicle vehicle : inventory) {
-            if (vehicle.getVehicleType().equalsIgnoreCase(vehicleType)) {
-                vehiclesByType.add(vehicle);
-            }
-        }
-
-        return vehiclesByType;
+    public List<Vehicle> getVehiclesByMileageRangeFromDatabase(int minMileage, int maxMileage) {
+        return vehicleDataManager.getVehiclesByMileageRange(minMileage, maxMileage);
     }
 
-    // Create removeVehicle method.
+    public List<Vehicle> getVehiclesByTypeFromDatabase(String vehicleType) {
+        return vehicleDataManager.getVehiclesByType(vehicleType);
+    }
+
+    public Vehicle getVehicleByVINFromDatabase(String vin) {
+        return vehicleDataManager.getVehicleByVIN(vin);
+    }
+
+    public void setdealershipID(int dealershipID) {
+        this.dealershipID = dealershipID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setInventory(List<Vehicle> inventory) {
+        this.inventory = inventory;
+    }
+
+    public void addVehicle(Vehicle vehicle) {
+        inventory.add(vehicle);
+        vehicleDataManager.addVehicle(vehicle);
+    }
+
     public void removeVehicle(Vehicle vehicle) {
         inventory.remove(vehicle);
+        vehicleDataManager.deleteVehicle(vehicle.getVin());
     }
 }

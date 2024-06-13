@@ -1,59 +1,43 @@
-/* 
-Contract.java
-This Java file contains the constructors, getters, and abstract methods for the vehicle contracts.
-*/
-
 package com.pluralsight.dealership;
 
 public abstract class Contract {
-    // Create the veriables, as private.
+    // Create variables, as private.
+    private int ID;
     private String contractDate;
     private String customerName;
     private String customerEmail;
     private Vehicle vehicleSold;
 
-    // Create the contructor.
-    public Contract(String contractDate, String customerName, String customerEmail, Vehicle vehicleSold) {
+    // Create the constructor.
+    public Contract(int ID, String contractDate, String customerName, String customerEmail, Vehicle vehicleSold) {
+        this.ID = ID;
         this.contractDate = contractDate;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
     }
 
-    // Create the getters and setters.
-    public String getContractDate() {
-        return contractDate;
+    // Create the getters.
+    public int getID() {
+        return ID;
     }
 
-    public void setContractDate(String contractDate) {
-        this.contractDate = contractDate;
+    public String getContractDate() {
+        return contractDate;
     }
 
     public String getCustomerName() {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
     public String getCustomerEmail() {
         return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
     }
 
     public Vehicle getVehicleSold() {
         return vehicleSold;
     }
 
-    public void setVehicleSold(Vehicle vehicleSold) {
-        this.vehicleSold = vehicleSold;
-    }
-
-    // Create the abstract methods.
     public abstract double getTotalPrice();
 
     public abstract double getMonthlyPayment();

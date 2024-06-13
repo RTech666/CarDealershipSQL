@@ -1,17 +1,9 @@
-/* 
-SalesContract.java
-This Java file contains the constructors, getters, and setters for the vehicle sales contract.
-
-getTotalPrice() - Calulates the total price of the vehicle including the addons (if user chose addons).
-getMonthlyPayment() - Calculates the monthly payment for the vehicle contract.
-*/
-
 package com.pluralsight.dealership;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SalesContract extends Contract {
-    // Create the variables, as private.
+    // Create the variables.
     private double salesTax;
     private double recordingFee;
     private double processingFee;
@@ -22,24 +14,16 @@ public class SalesContract extends Contract {
     static final double feeOver10K = 495.0;
     private List<AddOn> selectedAddOns;
 
-    // Create the contructor.
-    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicle, double salesTax, double recordingFee, double processingFee) {
-        super(date, customerName, customerEmail, vehicle);
+    // Create the constructor.
+    public SalesContract(int ID, String contractDate, String customerName, String customerEmail, Vehicle vehicle, double salesTax, double recordingFee, double processingFee) {
+        super(ID, contractDate, customerName, customerEmail, vehicle);
         this.salesTax = salesTax;
         this.recordingFee = recordingFee;
         this.processingFee = processingFee;
         this.selectedAddOns = new ArrayList<>();
     }
 
-    // Create getter and setters.
-    public boolean isFinanceOption() {
-        return financeOption;
-    }
-
-    public void setFinanceOption(boolean financeOption) {
-        this.financeOption = financeOption;
-    }
-
+    // Create the getters and setters.
     public double getSalesTax() {
         return this.salesTax;
     }
@@ -52,21 +36,29 @@ public class SalesContract extends Contract {
         return processingFee;
     }
 
+    public boolean isFinanceOption() {
+        return financeOption;
+    }
+
+    public void setFinanceOption(boolean financeOption) {
+        this.financeOption = financeOption;
+    }
+
     public void addSelectedAddOn(AddOn addOn) {
         selectedAddOns.add(addOn);
     }
 
+    // Create the overrides.
     @Override
     public double getTotalPrice() {
         double totalPrice = getVehicleSold().getPrice();
         double salesTax = totalPrice * salesTaxRate;
         double processingFee = (totalPrice < 10000) ? feeUnder10K : feeOver10K;
-    
-        // Add price of selected AddOns to total price
+
         for (AddOn addOn : selectedAddOns) {
             totalPrice += addOn.getPrice();
         }
-    
+
         return totalPrice + salesTax + recordingFee + processingFee;
     }
 

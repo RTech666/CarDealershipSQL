@@ -1,14 +1,7 @@
-/* 
-LeaseContract.java
-This Java file contains the constructors, getters, and setters for the vehicle sales contract.
-
-getTotalPrice() - Calulates the total price of the vehicle including the lease fee.
-*/
-
 package com.pluralsight.dealership;
 
 public class LeaseContract extends Contract {
-    // Create the variables.
+    // Create variables.
     private double expectedEndingValue;
     private double leaseFee;
     private double monthlyPayment;
@@ -17,37 +10,38 @@ public class LeaseContract extends Contract {
     public static final int loanTerm = 36;
 
     // Create the constructor.
-    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicle, double leaseFee, double monthlyPayment) {
-        super(date, customerName, customerEmail, vehicle);
+    public LeaseContract(int ID, String contractDate, String customerName, String customerEmail, Vehicle vehicle, double leaseFee, double monthlyPayment) {
+        super(ID, contractDate, customerName, customerEmail, vehicle);
         this.leaseFee = leaseFee;
         this.monthlyPayment = monthlyPayment;
     }
 
-    // Create getters and setters.
+    // Create the getters and setters.
     public double getExpectedEndingValue() {
         return expectedEndingValue;
-    }
-
-    public void setExpectedEndingValue(double expectedEndingValue) {
-        this.expectedEndingValue = expectedEndingValue;
     }
 
     public double getLeaseFee() {
         return leaseFee;
     }
 
-    public void setLeaseFee(double leaseFee) {
-        this.leaseFee = leaseFee;
-    }
-
     public double getMonthlyPayment() {
         return monthlyPayment;
+    }
+
+    public void setExpectedEndingValue(double expectedEndingValue) {
+        this.expectedEndingValue = expectedEndingValue;
+    }
+
+    public void setLeaseFee(double leaseFee) {
+        this.leaseFee = leaseFee;
     }
 
     public void setMonthlyPayment(double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
+    // Create the overrides.
     @Override
     public double getTotalPrice() {
         return getVehicleSold().getPrice() + leaseFee;

@@ -1,13 +1,8 @@
-/* 
-Vehicle.java
-
-This Java file contains the contructor for the vehicle array and has all the getters for other class files to use to get data as needed.
-*/
-
 package com.pluralsight.dealership;
 
 class Vehicle {
-    private int vin;
+    // Create the variables, as private.
+    private String vin;
     private int year;
     private String make;
     private String model;
@@ -16,7 +11,8 @@ class Vehicle {
     private int odometer;
     private double price;
 
-    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
+    // Create the constructor.
+    public Vehicle(String vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
         this.vin = vin;
         this.year = year;
         this.make = make;
@@ -28,7 +24,7 @@ class Vehicle {
     }
 
     // Create the getters.
-    public int getVin() {
+    public String getVin() {
         return vin;
     }
 
@@ -60,6 +56,7 @@ class Vehicle {
         return vehicleType;
     }
 
+    // Create the toString override.
     @Override
     public String toString() {
         return "VIN: " + vin + ", Year: " + year + ", Make: " + make + ", Model: " + model + ", Type: " + vehicleType + ", Color: " + color + ", Odometer: " + odometer + ", Price: $" + price;

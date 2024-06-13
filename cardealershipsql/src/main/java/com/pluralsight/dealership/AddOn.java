@@ -1,12 +1,7 @@
-/* 
-AddOn.java
-This Java file contains the constructors and getters for the vehicle addons.
-*/
-
 package com.pluralsight.dealership;
 
 public class AddOn {
-    // Initalize the variables.
+    // Create variables, as private.
     private String name;
     private double price;
 
@@ -23,5 +18,11 @@ public class AddOn {
 
     public double getPrice() {
         return price;
+    }
+
+    // Create toString override.
+    @Override
+    public String toString() {
+        return "AddOn{name='" + name + "', price=" + price + "}";
     }
 }

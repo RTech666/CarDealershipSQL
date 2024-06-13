@@ -1,90 +1,146 @@
-/* 
-AdminUserInterface.java
-This Java file contains the admin menu and anything related to admin options.
-
-displayMenu() - Prints the admin menu and asks user what they want to do.
-listLast10Contracts() - Prints last 10 contracts from contracts.csv.
-listAllContracts() - Print all contracts from contracts.csv.
-*/
-
 package com.pluralsight.dealership;
 import java.util.List;
 import java.util.Scanner;
 
 public class AdminUserInterface {
-    // Initalize the scanner.
-    static Scanner scanner = new Scanner(System.in);
+    // Create the variables, as private.
+    private VehicleDataManager vehicleDataManager = new VehicleDataManager();
+    private ContractDataManager contractDataManager = new ContractDataManager();
+    private Dealership dealership;
 
-    // Initalize the variable.
-    private ContractDataManager contractDataManager;
-
-    // Create the contrsuctor.
-    public AdminUserInterface(ContractDataManager contractDataManager) {
-        this.contractDataManager = contractDataManager;
+    // Create the constructor.
+    public AdminUserInterface(Dealership dealership) {
+        this.dealership = dealership;
     }
 
-    public void displayMenu() {
-        // Print the admin menu.
-        System.out.println("Admin Menu:");
-        System.out.println("1. View last 10 contracts");
-        System.out.println("2. View all contracts");
-        System.out.println("3. Back to main menu");
-    
-        // Ask user what choice they want.
-        System.out.print("Enter your choice: ");
-        int choice;
+    public void displayAdminMenu() {
+        // Initalize the scanner.
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            // Print admin menu.
+            System.out.println("Admin Menu:");
+            System.out.println("1. View all vehicles");
+            System.out.println("2. Add a vehicle");
+            System.out.println("3. Remove a vehicle");
+            System.out.println("4. View all contracts");
+            System.out.println("5. View last 10 contracts");
+            System.out.println("0. Exit");
 
-        try {
-            choice = scanner.nextInt();
+            // Ask the user for their choice.
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             // Read the user input and execute the appropriate method.
             switch (choice) {
                 case 1:
-                    listLast10Contracts();
+                    viewAllVehicles();
                     break;
                 case 2:
-                    listAllContracts();
+                    addVehicle(scanner);
                     break;
                 case 3:
+                    removeVehicle(scanner);
+                    break;
+                case 4:
+                    viewAllContracts();
+                    break;
+                case 5:
+                    viewLastTenContracts();
+                    break;
+                case 0:
+                    System.exit(0);
                     return;
                 default:
-                    System.out.println("Invalid input. Please enter a valid option.");
-                    displayMenu();
-                    return;
+                    System.out.println("Invalid choice. Please try again.");
             }
-        // Print error if invalid input.
-        } catch (Exception e) {
-            System.out.println("Invalid input. Please enter a valid option.");
-            scanner.next();
-            displayMenu();
         }
     }
 
-    public void listLast10Contracts() {
-        // Initalize the variable.
-        List<String> last10Contracts = contractDataManager.getLast10Contracts();
-
-        // Print last 10 contracts.
-        System.out.println("\nLast 10 Contracts:");
-        for (String contract : last10Contracts) {
-            System.out.println(contract);
+    // Create viewAllVehicles method.
+    private void viewAllVehicles() {
+        List<Vehicle> vehicles = vehicleDataManager.getAllVehicles();
+        for (Vehicle vehicle : vehicles) {
+            System.out.println(vehicle);
         }
-
-        // Return to admin menu.
-        displayMenu();
     }
 
-    // Create the listAllContracts method.
-    public void listAllContracts() {
-        // Initalize the variable.
-        List<String> contracts = contractDataManager.getAllContracts();
+    // Create addVehicle method.
+    private void addVehicle(Scanner scanner) {
+        // Ask the user for the VIN.
+        System.out.print("Enter VIN: ");
+        String vin = scanner.nextLine();
+        scanner.nextLine(); 
 
-        // Print all contracts.
-        System.out.println("\nAll Contracts:");
-        for (String contract : contracts) {
+        // Ask the user for the year.
+        System.out.print("Enter year: ");
+        int year = scanner.nextInt();
+        scanner.nextLine();
+
+        // Ask the user for the make.
+        System.out.print("Enter make: ");
+        String make = scanner.nextLine();
+
+        // Ask the user for the model.
+        System.out.print("Enter model: ");
+        String model = scanner.nextLine();
+
+        // Ask the user for the vehicle type.
+        System.out.print("Enter vehicle type: ");
+        String vehicleType = scanner.nextLine();
+
+        // Ask user for the color.
+        System.out.print("Enter color: ");
+        String color = scanner.nextLine();
+
+        // Ask user for the odometer.
+        System.out.print("Enter odometer: ");
+        int odometer = scanner.nextInt();
+        scanner.nextLine();
+
+        // Ask user for the price.
+        System.out.print("Enter price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine();
+
+        // Add vehicle to the database.
+        Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+        vehicleDataManager.addVehicle(vehicle);
+        dealership.addVehicle(vehicle);
+        System.out.println("Vehicle added successfully.");
+    }
+
+    // Create removeVehicle method.
+    private void removeVehicle(Scanner scanner) {
+        // Ask user for the VIN.
+        System.out.print("Enter VIN of the vehicle to remove: ");
+        String vin = scanner.nextLine();
+        scanner.nextLine();
+
+        // Remove the vehicle if a mmatching VIn was found in the database.
+        Vehicle vehicle = vehicleDataManager.getVehicleByVIN(vin);
+        if (vehicle != null) {
+            dealership.removeVehicle(vehicle);
+            vehicleDataManager.deleteVehicle(vin);
+            System.out.println("Vehicle removed successfully.");
+        } else {
+            System.out.println("Vehicle not found.");
+        }
+    }
+
+    // Create viewAllContracts method.
+    private void viewAllContracts() {
+        List<Contract> contracts = contractDataManager.getAllContracts();
+        for (Contract contract : contracts) {
             System.out.println(contract);
         }
+    }
 
-        // Return to admin menu.
-        displayMenu();
+    // Create viewLastTenContracts method.
+    private void viewLastTenContracts() {
+        List<Contract> contracts = contractDataManager.getLastTenContracts();
+        for (Contract contract : contracts) {
+            System.out.println(contract);
+        }
     }
 }
